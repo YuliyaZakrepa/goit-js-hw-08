@@ -67,14 +67,14 @@ const container = document.querySelector(".gallery");
 
 function createMarkup(arr) {
   return arr
-    .map(({ preview, original, description }) => {
+    .map((product) => {
       return `<li class="gallery-item">
-  <a class="gallery-link" href="${original}">
+  <a class="gallery-link" href="${product.original}">
     <img
       class="gallery-image"
-      src="${preview}"
-      data-source="${original}"
-      alt="${description}"
+      src="${product.preview}"
+      data-source="${product.original}"
+      alt="${product.description}"
     />
   </a>
 </li>`;
@@ -85,19 +85,25 @@ container.insertAdjacentHTML("afterbegin", createMarkup(images));
 console.log(container);
 container.addEventListener("click", handleClick);
 
+const image = document.querySelector("img");
+console.log(image);
+
 function handleClick(event) {
   event.preventDefault();
 
-  if (event.target === event.currentTarget) {
+  const parentEl = event.target.closest(".gallery-item");
+  if (!parentEl) {
     return;
   }
+  const image = parentEl.querySelector(".gallery-image");
+  console.log(image);
 
   const instance = basicLightbox.create(
     `<div class = "modal">
     <img
       class="gallery-image"
-      src="${event.target.dataset.source}"
-      alt="${event.target.alt}"
+      src="${image.dataset.source}"
+      alt="${image.alt}"
     />
  </div>`,
   );
